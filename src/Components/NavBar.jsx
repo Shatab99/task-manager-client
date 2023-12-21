@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { RiMenu2Fill } from "react-icons/ri";
+import { LuListTodo } from "react-icons/lu";
+import { MdOutlineCallMissedOutgoing } from "react-icons/md";
+import { FaCheck, FaUserAlt } from "react-icons/fa";
 
 
 const NavBar = ({children}) => {
@@ -15,7 +18,10 @@ const NavBar = ({children}) => {
                 <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                 <ul className="menu p-4 w-80 min-h-full bg-gray-500 text-white">
                     {/* Sidebar content here */}
-                    <li><Link className="text-xl font-bold mt-12">To-Do</Link></li>
+                    <li><Link to={'/'} className="text-xl font-bold mt-12 border-b-2 rounded-none"><LuListTodo className="text-xl"/>To-Do</Link></li>
+                    <li><Link to={'/ongoing'} className="text-xl font-bold border-b-2 rounded-noneborder-b-2 rounded-none"><MdOutlineCallMissedOutgoing className="text-xl"/> On Going</Link></li>
+                    <li><Link to={'/completed'} className="text-xl font-bold border-b-2 rounded-none"><FaCheck className="text-xl"/> Completed</Link></li>
+                    <li><Link to={'/dashboard'} className="text-xl font-bold border-b-2 rounded-none"><FaUserAlt className="text-xl"/>  Dashboard</Link></li>
                 </ul>
 
             </div>
