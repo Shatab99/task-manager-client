@@ -14,6 +14,12 @@ import DashBoard from './Components/DashBoard';
 import AuthBanner from './Components/LoginUp/AuthBanner';
 import AuthProvider from './Providers/AuthProvider';
 import PrivateRoute from './Providers/PrivateRoute';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -47,9 +53,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </QueryClientProvider>
     </HelmetProvider>
   </React.StrictMode>,
 )

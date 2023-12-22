@@ -1,15 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = ({ setShowSignIn }) => {
-    const { logInUser } = useContext(AuthContext)
+    const { logInUser , googleSignIn} = useContext(AuthContext)
+    const [loading , setLoading] = useState(false)
     const navigate = useNavigate()
 
     const handleSignIn = (e) => {
         e.preventDefault();
+        setLoading(true)
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
@@ -26,6 +28,7 @@ const SignIn = ({ setShowSignIn }) => {
                     background: 'black'
                 });
                 form.reset();
+                setLoading(false)
                 navigate('/')
             })
             .catch(err => {
@@ -37,8 +40,19 @@ const SignIn = ({ setShowSignIn }) => {
                     timer: 1500,
                     background: 'black'
                 });
-
+                setLoading(false)
             })
+    }
+
+    const handleGoogle = ()=>{
+        googleSignIn()
+        .then(res=>{
+            console.log(res)
+            navigate('/')
+        })
+        .catch(err =>{
+            console.log(err.message)
+        })
     }
 
 
@@ -48,11 +62,15 @@ const SignIn = ({ setShowSignIn }) => {
             <form onSubmit={handleSignIn} className="flex flex-col gap-4">
                 <input name="email" type="email" placeholder="Your Email" className="input input-bordered w-full rounded-sm" />
                 <input name="password" type="password" placeholder="Your Password" className="input input-bordered w-full rounded-sm" />
-                <input type="submit" value="Sign In" className="btn bg-black text-white hover:text-black rounded-sm" />
+                {
+                    loading ?  <button className="btn bg-black text-white hover:text-black" disabled><span className="loading loading-spinner"></span> </button> 
+                    :
+                    <input type="submit" value="Sign In" className="btn bg-black text-white hover:text-black rounded-sm" />
+                }
             </form>
             <div className="divider">OR</div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <button className="btn btn-outline btn-wide rounded-sm"><FaGoogle /> Continue With Google</button>
+                <button onClick={handleGoogle} className="btn btn-outline btn-wide rounded-sm"><FaGoogle /> Continue With Google</button>
                 <p>{`Don't`} Have Account ? <button onClick={() => setShowSignIn(false)} className="text-blue-700 font-semibold">Sign Up</button> </p>
             </div>
         </div>
