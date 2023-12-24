@@ -3,10 +3,13 @@ import { FaGoogle } from "react-icons/fa";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
+import { FaEyeLowVision } from "react-icons/fa6";
 
 const SignIn = ({ setShowSignIn }) => {
-    const { logInUser , googleSignIn} = useContext(AuthContext)
-    const [loading , setLoading] = useState(false)
+    const { logInUser, googleSignIn } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
+    const [show, setShow] = useState(false)
     const navigate = useNavigate()
 
     const handleSignIn = (e) => {
@@ -44,15 +47,15 @@ const SignIn = ({ setShowSignIn }) => {
             })
     }
 
-    const handleGoogle = ()=>{
+    const handleGoogle = () => {
         googleSignIn()
-        .then(res=>{
-            console.log(res)
-            navigate('/')
-        })
-        .catch(err =>{
-            console.log(err.message)
-        })
+            .then(res => {
+                console.log(res)
+                navigate('/')
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
     }
 
 
@@ -61,11 +64,19 @@ const SignIn = ({ setShowSignIn }) => {
             <h1 className="mb-6 text-center text-xl font-semibold text-black">Sign In</h1>
             <form onSubmit={handleSignIn} className="flex flex-col gap-4">
                 <input name="email" type="email" placeholder="Your Email" className="input input-bordered w-full rounded-sm" />
-                <input name="password" type="password" placeholder="Your Password" className="input input-bordered w-full rounded-sm" />
+                <div className="relative ">
+                    <input name="password" type={show ? 'text' : 'password'} placeholder="Your Password" className="input input-bordered w-full rounded-sm" />
+                    {
+                        show ? 
+                        <p onClick={()=>setShow(false)}><FaEyeLowVision className="absolute top-3 text-2xl right-2" /></p>
+                        : 
+                        <p onClick={()=> setShow(true)}><FaEye className="absolute top-3 text-2xl right-2" /></p>
+                    }
+                </div>
                 {
-                    loading ?  <button className="btn bg-black text-white hover:text-black" disabled><span className="loading loading-spinner"></span> </button> 
-                    :
-                    <input type="submit" value="Sign In" className="btn bg-black text-white hover:text-black rounded-sm" />
+                    loading ? <button className="btn bg-black text-white hover:text-black" disabled><span className="loading loading-spinner"></span> </button>
+                        :
+                        <input type="submit" value="Sign In" className="btn bg-black text-white hover:text-black rounded-sm" />
                 }
             </form>
             <div className="divider">OR</div>
